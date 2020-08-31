@@ -1,9 +1,9 @@
 -- TEST --
 
-SELECT * FROM GetCountryByName('china');
+SELECT * FROM get_country_by_name('china');
 
-CALL InsertRandomCountry('TomorrowLand');
+CALL insert_random_country('TomorrowLand');
 
-SELECT name, insertion_date from GetCountryByName('TomorrowLand');
+SELECT name, insertion_date from get_country_by_name('TomorrowLand');
 
-SELECT * from GetCountriesByDensity(100,200,400);
+SELECT * from get_countries_by_density(100,200,400);

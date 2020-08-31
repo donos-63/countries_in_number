@@ -81,17 +81,18 @@ $$
 
 -- CREATE BRIEF PROCEDURE --
 
-CREATE OR REPLACE PROCEDURE InsertRandomCountry(country_name IN TEXT)
+CREATE OR REPLACE PROCEDURE insert_random_country(country_name IN TEXT)
 LANGUAGE plpgsql  
 AS $proc_test$
 /*
 insert country with random stats with consitent data
+example: country area = population*density
 params:
 	-country_name : name of the country
 */
 DECLARE
-    pop_total bigint :=  random_between_int(10000,2000000000); --population between 1k to 3b
-    yearly_change decimal :=  random_between_dec(-10,10); --yearly population change in %
+    pop_total bigint :=  random_between_int(500,2000000000); --population between 10k to 3b
+    yearly_change decimal :=  random_between_dec(-10,10); --yearly population change in %. Limited to 10%
     pop_density int := random_between_int(1,30000); --population per km²
 BEGIN
     INSERT INTO country VALUES (
@@ -113,7 +114,7 @@ $proc_test$
 
 -- CREATE BRIEF FUNCTION --
 
-CREATE OR REPLACE FUNCTION GetCountryByName(country_name text) RETURNS SETOF country
+CREATE OR REPLACE FUNCTION get_country_by_name(country_name text) RETURNS SETOF country
 LANGUAGE plpgsql
 AS $func_test$
 /*
@@ -157,11 +158,11 @@ $trigg_test$
 CREATE TRIGGER trigg_set_date AFTER INSERT ON country
     FOR EACH ROW EXECUTE PROCEDURE set_creation_date();
 	
--- CREATE BRIEF DENSITY GROUPMENT -- 
+-- CREATE BRIEF DENSITY GROUPMENT FUNCTION-- 
 
 CREATE TYPE density_group AS (group_quarter text, countries text);
 
-CREATE OR REPLACE FUNCTION GetCountriesByDensity(max_first_quarter INT, max_second_quarter INT, max_third_quarter INT ) RETURNS SETOF density_group
+CREATE OR REPLACE FUNCTION get_countries_by_density(max_first_quarter INT, max_second_quarter INT, max_third_quarter INT ) RETURNS SETOF density_group
 LANGUAGE plpgsql  
 AS $proc_test2$
 /*
