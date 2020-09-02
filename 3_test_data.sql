@@ -3,7 +3,7 @@
 ----------------------------------------------------------
 
 -- Get data
-SELECT * FROM country
+SELECT * FROM country;
 
 -- get country by name
 SELECT * FROM get_country_by_name('china');
