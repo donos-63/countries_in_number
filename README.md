@@ -87,12 +87,12 @@ SELECT name, insertion_date FROM GetCountryByName('TomorrowLand');
 
 _La fonction récupère les pays groupés selon 4 niveaux de densité._
 
-_'100,200,400'= seuils des différents groupes:_
+_'**100,200,400**'= seuils des différents groupes:_
 
-* _groupe 1 : inférieur ou égal à 100 (inclus)_
-* _groupe 2 : supérieur à 100 et inférieur ou égal à 200 (inclus)_
-* _groupe 3 : supérieur à 200 et inférieur ou égal à 400 (inclus)_
-* _groupe 4 : supérieur à 400 (inclus)_
+* _groupe 1 : inférieur ou égal à **100**_
+* _groupe 2 : supérieur à **100** et inférieur ou égal à **200**_
+* _groupe 3 : supérieur à **200** et inférieur ou égal à **400**_
+* _groupe 4 : supérieur à **400**_
 
 ```sql
 SELECT * FROM get_countries_by_density(100,200,400);
@@ -102,12 +102,12 @@ SELECT * FROM get_countries_by_density(100,200,400);
 
 _La fonction donne une interprétation de la densité d'un pays (forte densité, intensité intermédiaire, faible densité, très faible densité)._
 
-_'100,200,400'= seuils des différents seuils:_
+_'**100,200,400**'= seuils des différents seuils:_
 
-* _groupe 1 : inférieur ou égal à 100 (inclus): très faible densité_
-* _groupe 2 : supérieur à 100 et inférieur ou égal à 200 (inclus) : faible densité_
-* _groupe 3 : supérieur à 200 et inférieur ou égal à 400 (inclus) : intensité intermédiaire_
-* _groupe 4 : supérieur à 400 (inclus) : très forte densité_
+* _groupe 1 : inférieur ou égal à **100**: très faible densité_
+* _groupe 2 : supérieur à **100** et inférieur ou égal à **200**: faible densité_
+* _groupe 3 : supérieur à **200** et inférieur ou égal à **400**: intensité intermédiaire_
+* _groupe 4 : supérieur à **400**: très forte densité_
 
 ```sql
 SELECT * FROM get_density_by_country('china', 100, 400, 1000);
