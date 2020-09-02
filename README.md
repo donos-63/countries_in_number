@@ -1,5 +1,5 @@
 # Les pays en chiffre
-![alt sql](https://skillvalue.com/wp-content/uploads/sites/7/2019/03/d%C3%A9veloppeur-sql-mission-freelance-et-remote.png)
+![alt sql](https://14pw3h3g28eu25pqsg4fbjt3-wpengine.netdna-ssl.com/wp-content/uploads/2019/09/postgresql-logo.png)
 
 ## Description
 Ce programme permet d'intégrer dans une table un référentiel de villes et d'effectuer des opérations dessus:
