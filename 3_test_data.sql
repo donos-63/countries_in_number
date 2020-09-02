@@ -2,7 +2,7 @@
 -- Test 
 ----------------------------------------------------------
 
--- Get data
+-- get data
 SELECT * FROM country;
 
 -- get country by name
@@ -14,7 +14,7 @@ CALL insert_random_country('TomorrowLand');
 -- call procedure to get country by name
 SELECT name, insertion_date from get_country_by_name('TomorrowLand');
 
--- get noutries grouped by density
+-- get coutries grouped by density
 SELECT * from get_countries_by_density(100,200,400);
 
 -- get density interpretation for a country 

@@ -20,7 +20,7 @@ Un instance de base **PostgresSql** est nécessaire, avec un schéma vide (ou no
 Les scripts proposés fonctionnent sur une version PostgreSQL >= 11.6. Pour contrôler la version de votre instance, exécutez la commande suivante:
 
 ``` sql
-	SELECT version();
+SELECT version();
 ```
 
 Télécharger le repo du projet sur votre ordinateur. Celui-ci doit contenir les fichiers suivants : 
