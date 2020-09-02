@@ -4,6 +4,7 @@ DROP FUNCTION IF EXISTS random_between;
 DROP FUNCTION IF EXISTS random_between_int;
 DROP FUNCTION IF EXISTS random_between_dec;
 DROP FUNCTION IF EXISTS set_creation_date;
+DROP FUNCTION IF EXISTS get_density_by_country;
 DROP TYPE IF EXISTS density_group CASCADE;
 
 
@@ -162,41 +163,71 @@ CREATE TRIGGER trigg_set_date AFTER INSERT ON country
 
 CREATE TYPE density_group AS (group_quarter text, countries text);
 
-CREATE OR REPLACE FUNCTION get_countries_by_density(max_first_quarter INT, max_second_quarter INT, max_third_quarter INT ) RETURNS SETOF density_group
+CREATE OR REPLACE FUNCTION get_countries_by_density(quarter1_v_low INT, quarter2_low INT, quarter3_medium INT ) RETURNS SETOF density_group
 LANGUAGE plpgsql  
 AS $proc_test2$
 /*
 Function that group countries by density
 params:
-	-max_first_quarter: first quarter between 0 and $max_first_quarter
-	-max_second_quarter: second quarter between $max_first_quarter and $max_second_quarter
-	-max_third_quarter: third quarter between $max_second_quarter and $max_third_quarter
+	-quarter1_v_low: first quarter between 0 and $quarter1_v_low
+	-quarter2_low: second quarter between $quarter1_v_low and $quarter2_low
+	-quarter3_medium: third quarter between $quarter2_low and $quarter3_medium
 	-(implicit) last_quarter: fourth quarter superior than $third quarter
 */  
 BEGIN
-    IF max_third_quarter < max_second_quarter OR max_second_quarter < max_first_quarter THEN
-        RAISE exception 'bad quarters definition. All quarters must be superior to previously quarters';
+    IF quarter3_medium < quarter2_low OR quarter2_low < quarter1_v_low THEN
+        RAISE exception 'bad quarters definition. Quarters must be superior to previously quarters';
     END IF;
 
     RETURN QUERY 
 		SELECT 'quarter_1' as group_quarter,string_agg(country.name, ' ,') as country_group
 		FROM country
-		WHERE country.density <= max_first_quarter
+		WHERE country.density <= quarter1_v_low
 		UNION    
 		SELECT 'quarter_2' as group_quarter,string_agg(country.name, ' ,') as country_group
 		FROM country
-		WHERE country.density > max_first_quarter AND country.density <= max_second_quarter
+		WHERE country.density > quarter1_v_low AND country.density <= quarter2_low
 		UNION    
 		SELECT 'quarter_3' as group_quarter,string_agg(country.name, ' ,') as country_group
 		FROM country
-		WHERE country.density > max_second_quarter AND country.density <= max_third_quarter
+		WHERE country.density > quarter2_low AND country.density <= quarter3_medium
 			UNION    
 		SELECT 'quarter_4' as group_quarter,string_agg(country.name, ' ,') as country_group
 		FROM country
-		WHERE country.density > max_third_quarter
+		WHERE country.density > quarter3_medium
 		ORDER BY group_quarter;
 END;
 $proc_test2$
 ;
+
+CREATE OR REPLACE FUNCTION get_density_by_country(country_name text, quarter1_v_low int, quarter2_low int, quarter3_medium int)
+RETURNS TABLE (name text, population bigint, density int,  density_interpret text) LANGUAGE plpgsql
+AS $func_density_country$
+/*
+Function that give density interpretation for a country
+params:
+	-country_name: label of the country
+	-quarter1_v_low: first quarter between 0 and $quarter1_v_low
+	-quarter2_low: second quarter between $quarter1_v_low and $quarter2_low
+	-quarter3_medium: third quarter between $quarter2_low and $quarter3_medium
+	-(implicit) last_quarter: fourth quarter superior than $third quarter3_medium
+*/  
+BEGIN 
+    IF quarter3_medium < quarter2_low OR quarter2_low < quarter1_v_low THEN
+        RAISE exception 'bad quarters definition. Quarters must be superior to previously quarters';
+    END IF;
+	
+	RETURN QUERY
+		SELECT country.name, country.population, country.density,
+			CASE 
+				WHEN country.density < quarter1_v_low THEN CONCAT('Density is > 0 to <=',quarter1_v_low,' : Very slow density')
+				WHEN country.density < quarter2_low THEN CONCAT('Density is > ',quarter1_v_low,' AND <= ',quarter2_low,' : Low density')
+				WHEN country.density < quarter3_medium THEN CONCAT('Density is >',quarter2_low,' AND <= ',quarter3_medium,' : Medium density')
+				ELSE CONCAT('Density is > ',quarter3_medium,' : Hight density')
+			END as demography
+		FROM country
+        WHERE lower(country.name)= lower(country_name);
+END;
+$func_density_country$
 
 	
