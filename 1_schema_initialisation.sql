@@ -1,3 +1,7 @@
+----------------------------------------------------------
+-- Create or replace table, functions, procedure, trigger.... used by the feature.
+----------------------------------------------------------
+
 -- REINIT DB --
 DROP TABLE IF EXISTS country CASCADE;
 DROP FUNCTION IF EXISTS random_between;
@@ -220,9 +224,9 @@ BEGIN
 	RETURN QUERY
 		SELECT country.name, country.population, country.density,
 			CASE 
-				WHEN country.density < quarter1_v_low THEN CONCAT('Density is > 0 to <=',quarter1_v_low,' : Very slow density')
+				WHEN country.density < quarter1_v_low THEN CONCAT('Density is > 0 to <= ',quarter1_v_low,' : Very slow density')
 				WHEN country.density < quarter2_low THEN CONCAT('Density is > ',quarter1_v_low,' AND <= ',quarter2_low,' : Low density')
-				WHEN country.density < quarter3_medium THEN CONCAT('Density is >',quarter2_low,' AND <= ',quarter3_medium,' : Medium density')
+				WHEN country.density < quarter3_medium THEN CONCAT('Density is > ',quarter2_low,' AND <= ',quarter3_medium,' : Medium density')
 				ELSE CONCAT('Density is > ',quarter3_medium,' : Hight density')
 			END as demography
 		FROM country

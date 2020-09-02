@@ -1,3 +1,9 @@
+----------------------------------------------------------
+-- Insert countries referential in country table
+----------------------------------------------------------
+
+TRUNCATE TABLE country;
+
 INSERT INTO country VALUES('China',1438207241,0.39,5540090,153,9388211,-348399.0,1.7,38,CAST(0.61*100 as int),18.47);
 INSERT INTO country VALUES('India',1377233523,0.99,13586631,464,2973190,-532687.0,2.2,28,CAST(0.35*100 as int),17.70);
 INSERT INTO country VALUES('United States',330610570,0.59,1937734,36,9147420,954806.0,1.8,38,CAST(0.83*100 as int),4.25);
