@@ -50,7 +50,7 @@ Afin d'exécuter les scripts DDL de la solution, il est préconisé d'utiliser u
 	* création de la fonction _get_density_by_country_
 
 * Exécuter le fichier _2_generate_data.sql_.
-     *Ce fichier intègre le référentiel des villes dans la table _country_
+    * Ce fichier intègre le référentiel des villes dans la table _country_
 
 
 ## Utilisation
